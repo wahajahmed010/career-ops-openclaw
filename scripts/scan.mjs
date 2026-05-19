@@ -27,24 +27,25 @@
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
-import { pathToFileURL, fileURLToPath } from 'url';
+import { pathToFileURL } from 'url';
 import path from 'path';
 import yaml from 'js-yaml';
 
-import { makeHttpCtx } from './providers/_http.mjs';
+import { PATHS } from './paths.mjs';
+import { makeHttpCtx } from '../providers/_http.mjs';
 
 const parseYaml = yaml.load;
 
 // ── Config ──────────────────────────────────────────────────────────
 
-const PORTALS_PATH = 'portals.yml';
-const SCAN_HISTORY_PATH = 'data/scan-history.tsv';
-const PIPELINE_PATH = 'data/pipeline.md';
-const APPLICATIONS_PATH = 'data/applications.md';
-const PROVIDERS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'providers');
+const PORTALS_PATH = PATHS.PORTALS;
+const SCAN_HISTORY_PATH = PATHS.SCAN_HISTORY;
+const PIPELINE_PATH = PATHS.PIPELINE;
+const APPLICATIONS_PATH = PATHS.APPLICATIONS;
+const PROVIDERS_DIR = PATHS.PROVIDERS;
 
 // Ensure required directories exist (fresh setup)
-mkdirSync('data', { recursive: true });
+mkdirSync(path.dirname(PATHS.APPLICATIONS), { recursive: true });
 
 const CONCURRENCY = 10;
 

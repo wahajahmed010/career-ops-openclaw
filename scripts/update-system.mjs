@@ -1,6 +1,15 @@
 #!/usr/bin/env node
 
-/**
+/** DISABLED: Not applicable to OpenClaw adaptation.
+ *  The original update-system.mjs was designed for the git-based
+ *  career-ops CLI and is not needed in the OpenClaw skill context.
+ */
+
+console.log('⚠️  update-system.mjs is disabled. Not applicable to OpenClaw adaptation.');
+process.exit(0);
+
+// Original code preserved below for reference only.
+/*
  * update-system.mjs — Safe auto-updater for career-ops
  *
  * Updates ONLY system layer files (modes, scripts, dashboard, templates).

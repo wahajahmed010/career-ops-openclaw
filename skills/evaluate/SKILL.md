@@ -11,7 +11,7 @@ Read `~/.openclaw/workspace/skills/career-ops/references/scoring-system.md` firs
 
 - CV: `~/.openclaw/workspace/career-ops-data/cv.md`
 - Profile: `~/.openclaw/workspace/career-ops-data/config/profile.yml`
-- Profile narrative: `~/.openclaw/workspace/career-ops/modes/_profile.md` (or create from template)
+- Profile narrative: `~/.openclaw/workspace/career-ops-data/config/profile.md` (or create from template)
 - Article digest: `~/.openclaw/workspace/career-ops-data/article-digest.md` (if exists)
 - Tracker: `~/.openclaw/workspace/career-ops-data/data/applications.md`
 - Reports: `~/.openclaw/workspace/career-ops-data/reports/`

@@ -21,6 +21,35 @@ The evaluation uses 6 blocks (A-F) with a global score of 1-5:
 - 3.5-3.9 → Decent but not ideal, apply only if specific reason
 - Below 3.5 → Recommend against applying (see Ethical Use)
 
+## Global Score Weights
+
+The global score is a weighted average of Blocks A-E (Block G is separate and qualitative):
+
+| Block | Dimension | Weight |
+|-------|-----------|--------|
+| B | Match with CV | 30% |
+| B | North Star Alignment | 20% |
+| D | Comp & Demand | 20% |
+| C | Level & Strategy | 15% |
+| E | Cultural Signals & Red Flags | 15% |
+
+**Calculation:** Global Score = (Match × 0.30) + (North Star × 0.20) + (Comp × 0.20) + (Level × 0.15) + (Culture/RedFlags × 0.15)
+
+Round to 1 decimal place.
+
+## Fallback Scoring (No Data Available)
+
+When WebSearch returns no salary/comp data for a role:
+
+| Situation | Default Score | Rationale |
+|-----------|--------------|----------|
+| No salary data found | 3 (Neutral) | Cannot confirm above or below market |
+| Company is startup/pre-revenue | 3 (Neutral) | Equity may compensate; flag for user |
+| Role is in non-standard market | 3 (Neutral) | Insufficient comparison data |
+| Data exists but contradictory | 3 (Neutral) + flag | Note contradiction, recommend manual research |
+
+ALWAYS note when a score is a fallback: "⚠️ Comp score is a fallback (no data found). Recommend manual research."
+
 ## Posting Legitimacy (Block G)
 
 Block G assesses whether a posting is likely a real, active opening. It does NOT affect the 1-5 global score — it is a separate qualitative assessment.

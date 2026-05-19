@@ -6,11 +6,9 @@
  */
 
 import { existsSync, mkdirSync, readdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const projectRoot = __dirname;
+import { PATHS } from './paths.mjs';
 
 // ANSI colors (only on TTY)
 const isTTY = process.stdout.isTTY;
@@ -31,7 +29,7 @@ function checkNodeVersion() {
 }
 
 function checkDependencies() {
-  if (existsSync(join(projectRoot, 'node_modules'))) {
+  if (existsSync(join(PATHS.SCRIPT_ROOT, '..', 'node_modules'))) {
     return { pass: true, label: 'Dependencies installed' };
   }
   return {
@@ -63,7 +61,7 @@ async function checkPlaywright() {
 }
 
 function checkCv() {
-  if (existsSync(join(projectRoot, 'cv.md'))) {
+  if (existsSync(PATHS.CV)) {
     return { pass: true, label: 'cv.md found' };
   }
   return {
@@ -77,7 +75,7 @@ function checkCv() {
 }
 
 function checkProfile() {
-  if (existsSync(join(projectRoot, 'config', 'profile.yml'))) {
+  if (existsSync(PATHS.PROFILE)) {
     return { pass: true, label: 'config/profile.yml found' };
   }
   return {
@@ -91,7 +89,7 @@ function checkProfile() {
 }
 
 function checkPortals() {
-  if (existsSync(join(projectRoot, 'portals.yml'))) {
+  if (existsSync(PATHS.PORTALS)) {
     return { pass: true, label: 'portals.yml found' };
   }
   return {
@@ -105,7 +103,7 @@ function checkPortals() {
 }
 
 function checkFonts() {
-  const fontsDir = join(projectRoot, 'fonts');
+  const fontsDir = PATHS.FONTS;
   if (!existsSync(fontsDir)) {
     return {
       pass: false,
@@ -133,7 +131,7 @@ function checkFonts() {
 }
 
 function checkAutoDir(name) {
-  const dirPath = join(projectRoot, name);
+  const dirPath = join(PATHS.DATA_ROOT, name);
   if (existsSync(dirPath)) {
     return { pass: true, label: `${name}/ directory ready` };
   }

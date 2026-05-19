@@ -1,0 +1,31 @@
+{
+  "name": "career-ops",
+  "version": "1.0.0",
+  "description": "Career operations suite — evaluate job offers, scan portals, generate CVs, track applications",
+  "type": "module",
+  "scripts": {
+    "scan": "node scripts/scan.mjs",
+    "generate-pdf": "node scripts/generate-pdf.mjs",
+    "generate-latex": "node scripts/generate-latex.mjs",
+    "check-liveness": "node scripts/check-liveness.mjs",
+    "merge-tracker": "node scripts/merge-tracker.mjs",
+    "dedup-tracker": "node scripts/dedup-tracker.mjs",
+    "normalize-statuses": "node scripts/normalize-statuses.mjs",
+    "verify-pipeline": "node scripts/verify-pipeline.mjs",
+    "analyze-patterns": "node scripts/analyze-patterns.mjs",
+    "followup-cadence": "node scripts/followup-cadence.mjs",
+    "cv-sync-check": "node scripts/cv-sync-check.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "gemini-eval": "node scripts/gemini-eval.mjs",
+    "test-all": "node scripts/test-all.mjs",
+    "update-system": "node scripts/update-system.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "playwright": "^1.50.0"
+  },
+  "optionalDependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "dotenv": "^16.4.0"
+  }
+}

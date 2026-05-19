@@ -12,14 +12,12 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 
-const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
-const APPS_FILE = existsSync(join(CAREER_OPS, 'data/applications.md'))
-  ? join(CAREER_OPS, 'data/applications.md')
-  : join(CAREER_OPS, 'applications.md');
-const FOLLOWUPS_FILE = join(CAREER_OPS, 'data/follow-ups.md');
+import { PATHS } from './paths.mjs';
+
+const APPS_FILE = PATHS.APPLICATIONS;
+const FOLLOWUPS_FILE = PATHS.FOLLOWUPS;
 
 
 // --- CLI args ---
@@ -148,8 +146,8 @@ function extractContacts(notes) {
 function resolveReportPath(reportField) {
   const match = reportField.match(/\]\(([^)]+)\)/);
   if (!match) return null;
-  const fullPath = join(CAREER_OPS, match[1]);
-  return existsSync(fullPath) ? match[1] : null;
+  const fullPath = reportMatch[1].startsWith('/') ? reportMatch[1] : join(PATHS.DATA_ROOT, reportMatch[1]);
+  return existsSync(fullPath) ? reportMatch[1] : null;
 }
 
 // --- Compute urgency ---

@@ -13,11 +13,12 @@
 
 import { execSync, execFileSync } from 'child_process';
 import { readFileSync, existsSync, readdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { join } from 'path';
+import { pathToFileURL } from 'url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = __dirname;
+import { PATHS } from './paths.mjs';
+
+const ROOT = PATHS.SCRIPT_ROOT;
 const QUICK = process.argv.includes('--quick');
 
 let passed = 0;
@@ -39,8 +40,14 @@ function run(cmd, args = [], opts = {}) {
   }
 }
 
-function fileExists(path) { return existsSync(join(ROOT, path)); }
-function readFile(path) { return readFileSync(join(ROOT, path), 'utf-8'); }
+// Resolve path: check skill dir first, then data dir
+function resolvePath(relative) {
+  const fromSkill = join(PATHS.SCRIPT_ROOT, '..', relative);
+  const fromData = join(PATHS.DATA_ROOT, relative);
+  return existsSync(fromSkill) ? fromSkill : fromData;
+}
+function fileExists(relative) { return existsSync(resolvePath(relative)); }
+function readFile(relative) { return readFileSync(resolvePath(relative), 'utf-8'); }
 
 console.log('\n🧪 career-ops test suite\n');
 

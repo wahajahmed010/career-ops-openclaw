@@ -99,6 +99,13 @@ On first use, check if required files exist in `career-ops-data/`:
 3. `portals.yml` — if missing, copy from example
 4. `data/applications.md` — if missing, create with header row
 
+**Before first use, run:**
+```
+cd ~/.openclaw/workspace/skills/career-ops
+npm install
+npx playwright install chromium
+```
+
 If any are missing, enter onboarding mode before proceeding with evaluations.
 
 ## Ethical Use

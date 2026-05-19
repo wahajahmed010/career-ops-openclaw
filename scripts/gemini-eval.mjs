@@ -28,9 +28,10 @@
  * `modelName` below and the `--model` examples accordingly.
  */
 
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { readFileSync, existsSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
+import { join } from 'path';
+
+import { PATHS as DATA_PATHS } from './paths.mjs';
 
 // ---------------------------------------------------------------------------
 // Bootstrap: load .env before anything else
@@ -47,19 +48,18 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 // ---------------------------------------------------------------------------
 // Paths
 // ---------------------------------------------------------------------------
-const ROOT = dirname(fileURLToPath(import.meta.url));
 
-const PATHS = {
+const PATHS_LOCAL = {
   // Primary evaluation logic lives in these two mode files
-  shared:      join(ROOT, 'modes', '_shared.md'),
-  oferta:      join(ROOT, 'modes', 'oferta.md'),
-  // Canonical skill path referenced in Issue #344
-  evaluate:    join(ROOT, '.claude', 'skills', 'career-ops', 'SKILL.md'),
-  cv:          join(ROOT, 'cv.md'),
-  profile:     join(ROOT, 'modes', '_profile.md'),
-  profileYml:  join(ROOT, 'config', 'profile.yml'),
-  reports:     join(ROOT, 'reports'),
-  tracker:     join(ROOT, 'data', 'applications.md'),
+  shared:      join(DATA_PATHS.MODES, '_shared.md'),
+  oferta:      join(DATA_PATHS.MODES, 'oferta.md'),
+  // Canonical skill path
+  evaluate:    join(DATA_PATHS.SCRIPT_ROOT, '..', 'skills', 'evaluate', 'SKILL.md'),
+  cv:          DATA_PATHS.CV,
+  profile:     join(DATA_PATHS.MODES, '_profile.md'),
+  profileYml:  DATA_PATHS.PROFILE,
+  reports:     DATA_PATHS.REPORTS,
+  tracker:     DATA_PATHS.APPLICATIONS,
 };
 
 // ---------------------------------------------------------------------------
@@ -152,8 +152,8 @@ function readFile(path, label) {
 }
 
 function nextReportNumber() {
-  if (!existsSync(PATHS.reports)) return '001';
-  const files = readdirSync(PATHS.reports)
+  if (!existsSync(PATHS_LOCAL.reports)) return '001';
+  const files = readdirSync(PATHS_LOCAL.reports)
     .filter(f => /^\d{3}-/.test(f))
     .map(f => parseInt(f.slice(0, 3)))
     .filter(n => !isNaN(n));
@@ -161,26 +161,16 @@ function nextReportNumber() {
   return String(Math.max(...files) + 1).padStart(3, '0');
 }
 
-// Lazy import — only used when saving
-let readdirSync;
-try {
-  ({ readdirSync } = await import('fs'));
-} catch { /* already imported above via named exports */ }
-// Use named import fallback
-if (!readdirSync) {
-  readdirSync = (await import('fs')).readdirSync;
-}
-
 // ---------------------------------------------------------------------------
 // Load context files
 // ---------------------------------------------------------------------------
 console.log('\n📂  Loading context files...');
 
-const sharedContext  = readFile(PATHS.shared,      'modes/_shared.md');
-const ofertaLogic    = readFile(PATHS.oferta,      'modes/oferta.md');
-const cvContent      = readFile(PATHS.cv,          'cv.md');
-const profileContent = readFile(PATHS.profile,     'modes/_profile.md');
-const profileYml     = readFile(PATHS.profileYml,  'config/profile.yml');
+const sharedContext  = readFile(PATHS_LOCAL.shared,      'modes/_shared.md');
+const ofertaLogic    = readFile(PATHS_LOCAL.oferta,      'modes/oferta.md');
+const cvContent      = readFile(PATHS_LOCAL.cv,          'cv.md');
+const profileContent = readFile(PATHS_LOCAL.profile,     'modes/_profile.md');
+const profileYml     = readFile(PATHS_LOCAL.profileYml,  'config/profile.yml');
 
 // ---------------------------------------------------------------------------
 // Build the system prompt (mirrors the Claude skill router logic)
@@ -312,15 +302,15 @@ if (summaryMatch) {
 // ---------------------------------------------------------------------------
 if (saveReport) {
   try {
-    if (!existsSync(PATHS.reports)) {
-      mkdirSync(PATHS.reports, { recursive: true });
+    if (!existsSync(PATHS_LOCAL.reports)) {
+      mkdirSync(PATHS_LOCAL.reports, { recursive: true });
     }
 
     const num         = nextReportNumber();
     const today       = new Date().toISOString().split('T')[0];
     const companySlug = company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const filename    = `${num}-${companySlug}-${today}.md`;
-    const reportPath  = join(PATHS.reports, filename);
+    const reportPath  = join(PATHS_LOCAL.reports, filename);
 
     const reportContent = `# Evaluation: ${company} — ${role}
 
